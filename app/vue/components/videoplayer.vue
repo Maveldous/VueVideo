@@ -30,8 +30,7 @@
                 this.paused = !this.paused
             },
             getsize: function(){
-                console.log(document.querySelector('video').videoWidth);
-                console.log(document.querySelector('video').videoHeight);
+ 
             }
         },
         mounted: function(){
