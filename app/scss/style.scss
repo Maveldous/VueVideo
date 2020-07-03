@@ -1,0 +1,80 @@
+body{
+    box-sizing: border-box;
+    padding: 50px 100px;
+    margin: 0;
+    padding: 0;
+}
+
+// Modal
+
+.modal{
+    display: inline-block;
+    button{
+        margin: 5px;
+    }
+}
+
+.modalWindow{
+    visibility: hidden;
+    transition: all ease 0.3s ;
+    .overlay{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.3);
+    }
+    .modal__box{
+        position: absolute;
+        background-color: #fff;
+        border-radius: 3px;
+        padding: 20px;
+        width: 300px;
+        height: 150px;
+        text-align: center;
+        left: 50%;
+        margin-left: -150px;
+        transform: translateY(-300px);
+        transition: all ease 0.4s;
+    }
+    &.active{
+        opacity: 1;
+        visibility: visible;
+        .modal__box{
+            transform: translateY(0);
+        }
+    }
+}
+
+// routing
+
+.page-header{
+    background-color: #eee;
+    box-sizing: 0px 3px 6px rgba(0,0,0,0.16);
+
+    ul{
+        text-align: center;
+        li{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: inline-block;
+            a{
+                padding: 15px;
+                text-decoration: none;
+                color:#aaa;
+                display: block;
+                &.router-link-exact-active{
+                    color: #333;
+                }
+            }
+        }
+    }
+}
+
+.wrapper{
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 0px 30px;
+}
