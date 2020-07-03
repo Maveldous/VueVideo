@@ -1,6 +1,6 @@
 <template>
-    <div class="videoplayer">
-        <video @canplaythrough="getsize">
+    <div :style="{ height: height + 'px', width: width + 'px' }" class="videoplayer">
+        <video :width="width" :height="height" @canplaythrough="getsize">
             <source :src="reflink" type="video/mp4">
             <source :src="reflink" type="video/webm">
             <p>Your browser doesn't support HTML5 video. Here is a <a :href="reflink">link to the video</a> instead.</p>
@@ -18,8 +18,10 @@
     module.exports = {
         data: function (){
             return {
-                reflink: this.link, // this.link должно быть
-                paused: true
+                reflink: 'https://2ch.hk/a/src/6873846/15936790507220.webm',
+                paused: true,
+                width: 0,
+                height: 0
             }
         },
         props:['link'],
@@ -30,7 +32,12 @@
                 this.paused = !this.paused
             },
             getsize: function(){
- 
+                this.width = document.querySelector('video').videoWidth;
+                this.height = document.querySelector('video').videoHeight;
+                if(document.documentElement.clientWidth > 900){
+                    this.width = this.width/2
+                    this.height = this.height/2
+                }
             }
         },
         mounted: function(){
@@ -49,15 +56,11 @@
         height: 100%;
     }
     .videoplayer{
-        height: 360px;
-        width: 640px;
         position: relative;
         border: 1px solid black;
     }
     video{
         position: absolute;
-        width: 640px;
-        height: 360px;
         z-index: -1;
     }
     .video__controll-panel{

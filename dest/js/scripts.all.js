@@ -13,7 +13,7 @@ var $ = window.$ = window.JQuery = require('jquery');
 require('./app/app');
 
 },{"./app/app":1,"jquery":5}],3:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".video__btn[data-v-2fec10dc]{\n    display: block;\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n.videoplayer[data-v-2fec10dc]{\n    height: 360px;\n    width: 640px;\n    position: relative;\n    border: 1px solid black;\n}\nvideo[data-v-2fec10dc]{\n    position: absolute;\n    width: 640px;\n    height: 360px;\n    z-index: -1;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    display: flex;\n    height: 15%;\n    margin-top: 48%;\n}\n.video__load[data-v-2fec10dc]{\n    width: 100%;\n    background: rgba(0, 0, 0, 0.8);\n}")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".video__btn[data-v-2fec10dc]{\n    display: block;\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n.videoplayer[data-v-2fec10dc]{\n    position: relative;\n    border: 1px solid black;\n}\nvideo[data-v-2fec10dc]{\n    position: absolute;\n    z-index: -1;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    display: flex;\n    height: 15%;\n    margin-top: 48%;\n}\n.video__load[data-v-2fec10dc]{\n    width: 100%;\n    background: rgba(0, 0, 0, 0.8);\n}")
 ;(function(){
 //
 //
@@ -35,8 +35,10 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".video__
 module.exports = {
     data: function (){
         return {
-            reflink: this.link, // this.link должно быть
-            paused: true
+            reflink: 'https://2ch.hk/a/src/6873846/15936790507220.webm',
+            paused: true,
+            width: 0,
+            height: 0
         }
     },
     props:['link'],
@@ -47,8 +49,12 @@ module.exports = {
             this.paused = !this.paused
         },
         getsize: function(){
-            console.log(document.querySelector('video').videoWidth);
-            console.log(document.querySelector('video').videoHeight);
+            this.width = document.querySelector('video').videoWidth;
+            this.height = document.querySelector('video').videoHeight;
+            if(document.documentElement.clientWidth > 900){
+                this.width = this.width/2
+                this.height = this.height/2
+            }
         }
     },
     mounted: function(){
@@ -60,7 +66,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer"},[_c('video',{on:{"canplaythrough":_vm.getsize}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn",on:{"click":function($event){return _vm.pause()}}},[_vm._v("STOP")]),_vm._v(" "),_c('div',{staticClass:"video__load"})])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer",style:({ height: _vm.height + 'px', width: _vm.width + 'px' })},[_c('video',{attrs:{"width":_vm.width,"height":_vm.height},on:{"canplaythrough":_vm.getsize}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn",on:{"click":function($event){return _vm.pause()}}},[_vm._v("STOP")]),_vm._v(" "),_c('div',{staticClass:"video__load"})])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-2fec10dc"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
