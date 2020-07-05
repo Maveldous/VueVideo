@@ -1,13 +1,13 @@
 <template>
-    <div :style="{ height: height + 'px', width: width + 'px' }" class="videoplayer">
-        <video :width="width" :height="height" @canplaythrough.once="getsize" @timeupdate="timeUpdate">
+    <div class="videoplayer">
+        <video height="360px" width="640px" @timeupdate="timeUpdate">
             <source :src="reflink" type="video/mp4">
             <source :src="reflink" type="video/webm">
             <p>Your browser doesn't support HTML5 video. Here is a <a :href="reflink">link to the video</a> instead.</p>
         </video>
         <div class="video__controll-panel">
             <button @click="pause()" class="video__btn fas fa-play"></button>
-            <div class="video__load">
+            <div @click="move" class="video__load">
                 <div :style="{width: loadWidth + '%'}" class="inner__load"></div>
             </div>
         </div>
@@ -22,9 +22,6 @@
             return {
                 reflink: this.link,
                 paused: true,
-                width: 0,
-                height: 0,
-                condition: true,
                 loadWidth: 0
             }
         },
@@ -32,29 +29,19 @@
         methods:{
             pause: function(){
                 var video = document.querySelector('video');
-                if(this.paused){
-                    video.play()
-                    this.condition = true
-                } 
-                else {
-                    video.pause()
-                    this.condition = false
-                }
+                if(this.paused) video.play()
+                else video.pause()
                 this.paused = !this.paused
             },
-            getsize: function(){
-                var video = document.querySelector('video');
-                this.width = video.videoWidth;
-                this.height = video.videoHeight;
-                if(document.documentElement.clientWidth > 900){
-                    this.width = this.width/2
-                    this.height = this.height/2
-                }
-            },
-
             timeUpdate: function(){
-                var video = document.querySelector('video');
-                this.loadWidth =  100 * video.currentTime / video.duration
+                var video =         document.querySelector('video');
+                this.loadWidth =    video.currentTime * 100 / video.duration
+            },
+            move: function(event){
+                var video =         document.querySelector('video');
+                var loadband =      document.querySelector('.video__load');
+                this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+                video.currentTime = this.loadWidth * video.duration / 100
             }
         },
         mounted: function(){

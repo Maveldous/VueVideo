@@ -39,9 +39,6 @@ module.exports = {
         return {
             reflink: this.link,
             paused: true,
-            width: 0,
-            height: 0,
-            condition: true,
             loadWidth: 0
         }
     },
@@ -49,29 +46,19 @@ module.exports = {
     methods:{
         pause: function(){
             var video = document.querySelector('video');
-            if(this.paused){
-                video.play()
-                this.condition = true
-            } 
-            else {
-                video.pause()
-                this.condition = false
-            }
+            if(this.paused) video.play()
+            else video.pause()
             this.paused = !this.paused
         },
-        getsize: function(){
-            var video = document.querySelector('video');
-            this.width = video.videoWidth;
-            this.height = video.videoHeight;
-            if(document.documentElement.clientWidth > 900){
-                this.width = this.width/2
-                this.height = this.height/2
-            }
-        },
-
         timeUpdate: function(){
-            var video = document.querySelector('video');
-            this.loadWidth =  100 * video.currentTime / video.duration
+            var video =         document.querySelector('video');
+            this.loadWidth =    video.currentTime * 100 / video.duration
+        },
+        move: function(event){
+            var video =         document.querySelector('video');
+            var loadband =      document.querySelector('.video__load');
+            this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+            video.currentTime = this.loadWidth * video.duration / 100
         }
     },
     mounted: function(){
@@ -83,7 +70,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer",style:({ height: _vm.height + 'px', width: _vm.width + 'px' })},[_c('video',{attrs:{"width":_vm.width,"height":_vm.height},on:{"~canplaythrough":function($event){return _vm.getsize($event)},"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn fas fa-play",on:{"click":function($event){return _vm.pause()}}}),_vm._v(" "),_c('div',{staticClass:"video__load"},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer"},[_c('video',{attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn fas fa-play",on:{"click":function($event){return _vm.pause()}}}),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"click":_vm.move}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-2fec10dc"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
@@ -98,7 +85,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],4:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".global-container{\n    height: 100vh;\n    width: 100vw;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.ref__container-title{\n    display: block;\n    text-align: center;\n    font-size: 35px;\n    padding-bottom: 50px;\n}\n.ref__container-input{\n    width: 70vw;\n    height: 30px;\n    border: 3px solid #ada4a4d8;\n    border-radius: 5px;\n    font-size: 25px;\n}\n.ref__container-btn{\n    font-size: 25px;\n}")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".global-container{\n    height: 100vh;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.ref__container-title{\n    display: block;\n    text-align: center;\n    font-size: 35px;\n    padding-bottom: 50px;\n}\n.ref__container-input{\n    width: 70vw;\n    height: 30px;\n    border: 3px solid #ada4a4d8;\n    border-radius: 5px;\n    font-size: 25px;\n}\n.ref__container-btn{\n    font-size: 25px;\n}")
 ;(function(){
 //
 //
@@ -151,7 +138,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-25ce3ebc", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-25ce3ebc", __vue__options__)
+    hotAPI.reload("data-v-25ce3ebc", __vue__options__)
   }
 })()}
 },{"./components/videoplayer.vue":3,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],5:[function(require,module,exports){
