@@ -23,5 +23,8 @@
     "vueify": "^9.4.1",
     "jquery": "3.5.1",
     "axios": "*"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.1"
   }
 }
