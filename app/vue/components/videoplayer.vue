@@ -7,7 +7,7 @@
         </video>
         <div class="video__controll-panel">
             <button @click="pause()" class="video__btn fas fa-play"></button>
-            <div @click="move" class="video__load">
+            <div @click="move" @mousedown="mousedown" class="video__load">
                 <div :style="{width: loadWidth + '%'}" class="inner__load"></div>
             </div>
         </div>
@@ -22,7 +22,8 @@
             return {
                 reflink: this.link,
                 paused: true,
-                loadWidth: 0
+                loadWidth: 0,
+                stateMouse: false
             }
         },
         props:['link'],
@@ -38,10 +39,22 @@
                 this.loadWidth =    video.currentTime * 100 / video.duration
             },
             move: function(event){
+                this.stateMouse =   false
                 var video =         document.querySelector('video');
                 var loadband =      document.querySelector('.video__load');
                 this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
                 video.currentTime = this.loadWidth * video.duration / 100
+            },
+            mousedown: function(){
+                this.stateMouse =   true
+                var video =         document.querySelector('video');
+                var loadband =      document.querySelector('.video__load');
+                loadband.addEventListener('mousemove', event => {
+                    if(this.stateMouse){
+                        this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+                        video.currentTime = this.loadWidth * video.duration / 100
+                    }
+                })
             }
         },
         mounted: function(){
@@ -81,4 +94,5 @@
         background: #fff;
         height: 100%;
     }
+
 </style>

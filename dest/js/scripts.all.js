@@ -39,7 +39,8 @@ module.exports = {
         return {
             reflink: this.link,
             paused: true,
-            loadWidth: 0
+            loadWidth: 0,
+            stateMouse: false
         }
     },
     props:['link'],
@@ -55,10 +56,22 @@ module.exports = {
             this.loadWidth =    video.currentTime * 100 / video.duration
         },
         move: function(event){
+            this.stateMouse =   false
             var video =         document.querySelector('video');
             var loadband =      document.querySelector('.video__load');
             this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
             video.currentTime = this.loadWidth * video.duration / 100
+        },
+        mousedown: function(){
+            this.stateMouse =   true
+            var video =         document.querySelector('video');
+            var loadband =      document.querySelector('.video__load');
+            loadband.addEventListener('mousemove', event => {
+                if(this.stateMouse){
+                    this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+                    video.currentTime = this.loadWidth * video.duration / 100
+                }
+            })
         }
     },
     mounted: function(){
@@ -70,7 +83,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer"},[_c('video',{attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn fas fa-play",on:{"click":function($event){return _vm.pause()}}}),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"click":_vm.move}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer"},[_c('video',{attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn fas fa-play",on:{"click":function($event){return _vm.pause()}}}),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"click":_vm.move,"mousedown":_vm.mousedown}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-2fec10dc"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
@@ -138,7 +151,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-25ce3ebc", __vue__options__)
   } else {
-    hotAPI.reload("data-v-25ce3ebc", __vue__options__)
+    hotAPI.rerender("data-v-25ce3ebc", __vue__options__)
   }
 })()}
 },{"./components/videoplayer.vue":3,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],5:[function(require,module,exports){
