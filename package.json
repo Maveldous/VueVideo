@@ -20,9 +20,7 @@
     "normalize.css": "^8.0.1",
     "vinyl-source-stream": "^2.0.0",
     "vue": "^2.6.11",
-    "vueify": "^9.4.1",
-    "jquery": "3.5.1",
-    "axios": "*"
+    "vueify": "^9.4.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1"

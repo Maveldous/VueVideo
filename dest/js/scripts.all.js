@@ -13,8 +13,19 @@ var $ = window.$ = window.JQuery = require('jquery');
 require('./app/app');
 
 },{"./app/app":1,"jquery":5}],3:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".video__btn[data-v-2fec10dc]{\n    display: block;\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n.videoplayer[data-v-2fec10dc]{\n    position: relative;\n    border: 1px solid black;\n    background: #000;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    position: absolute;\n    z-index: 2;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    display: flex;\n    height: 15%;\n}\n.video__load[data-v-2fec10dc]{\n    width: 100%;\n    background: rgba(0, 0, 0, 0.8);\n}\n.inner__load[data-v-2fec10dc]{\n    background: #fff;\n    height: 100%;\n}")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".videoplayer[data-v-2fec10dc]{\n    position: relative;\n    border: 1px solid black;\n    background: #000;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    position: absolute;\n    z-index: 2;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    display: flex;\n    height: 15%;\n}\n.video__load[data-v-2fec10dc]{\n    width: 100%;\n    background: rgba(0, 0, 0, 0.8);\n}\n.inner__load[data-v-2fec10dc]{\n    background: #fff;\n    height: 100%;\n}\n\n/* Кнопки иконки */\n\nbutton[data-v-2fec10dc], \nbutton[data-v-2fec10dc]:active, \nbutton[data-v-2fec10dc]:focus {\n    outline: none;\n}\n\n.video__btn-pause[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n.video__btn-fullscreen[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n\ni[data-v-2fec10dc]{\n    font-size: 15px;\n    padding: 0 10px;\n    transition: all ease 1s;\n}\n\n.volumeBox[data-v-2fec10dc]{\n    display: inline-block;\n    position: relative;\n}\n\n.video__btn-volume[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n\n.video__range-volume[data-v-2fec10dc]{\n    position: absolute;\n    width: 150%;\n    top: 0;\n    right: -30%;\n    transform: rotateZ(-90deg) translateX(40px);\n}\n\n/* Блок с фуллскрин стилями */\n\n.videoplayer.active[data-v-2fec10dc]{\n    position: fixed;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n}\n\n.videoplayer.active .videoComponent[data-v-2fec10dc]{\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n}\n\n.videoplayer.active .video__controll-panel[data-v-2fec10dc]{\n    height: 8%;\n}")
 ;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -39,8 +50,11 @@ module.exports = {
         return {
             reflink: this.link,
             paused: true,
+            fullstate: false,
             loadWidth: 0,
-            stateMouse: false
+            stateMouse: false,
+            activeVolume: false,
+            volume: 50
         }
     },
     props:['link'],
@@ -56,26 +70,45 @@ module.exports = {
             this.loadWidth =    video.currentTime * 100 / video.duration
         },
         move: function(event){
-            this.stateMouse =   false
+            this.stateMouse =   true
             var video =         document.querySelector('video');
             var loadband =      document.querySelector('.video__load');
             this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
             video.currentTime = this.loadWidth * video.duration / 100
         },
-        mousedown: function(){
-            this.stateMouse =   true
-            var video =         document.querySelector('video');
-            var loadband =      document.querySelector('.video__load');
-            loadband.addEventListener('mousemove', event => {
-                if(this.stateMouse){
-                    this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
-                    video.currentTime = this.loadWidth * video.duration / 100
-                }
-            })
+        mousemove: function(event){
+            if(this.stateMouse){
+                var video =         document.querySelector('video');
+                var loadband =      document.querySelector('.video__load');
+                this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+                video.currentTime = this.loadWidth * video.duration / 100
+            }
+        },
+        fullscreen: function(){
+            if(this.fullstate){
+                document.exitFullscreen()
+                this.fullstate = !this.fullstate
+            }
+            else{
+                document.documentElement.requestFullscreen()
+                this.fullstate = !this.fullstate
+            }                
         }
     },
-    mounted: function(){
-
+    watch:{
+        volume(){
+            var video =         document.querySelector('video');
+            video.volume = this.volume / 100
+        }
+    },
+    created: function(){
+        var mouseup = window.addEventListener('mouseup', event => {
+            this.stateMouse =   false
+        })
+        document.addEventListener('fullscreenchange', event => {
+            if (document.fullscreenElement) this.fullstate = true
+            else                            this.fullstate = false
+        });
     }
 }
 
@@ -83,7 +116,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer"},[_c('video',{attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn fas fa-play",on:{"click":function($event){return _vm.pause()}}}),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"click":_vm.move,"mousedown":_vm.mousedown}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer",class:{'active': _vm.fullstate}},[_c('video',{staticClass:"videoComponent",attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn-pause",on:{"click":function($event){return _vm.pause()}}},[_c('i',{class:_vm.paused ? 'fas fa-play': 'fas fa-pause'})]),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"mousedown":function($event){$event.preventDefault();return _vm.move($event)},"mousemove":_vm.mousemove}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})]),_vm._v(" "),_c('div',{staticClass:"volumeBox"},[_c('button',{staticClass:"video__btn-volume",on:{"click":function($event){_vm.activeVolume = !_vm.activeVolume}}},[_c('i',{staticClass:"fas fa-volume-up"})]),_vm._v(" "),_c('input',{directives:[{name:"show",rawName:"v-show",value:(_vm.activeVolume),expression:"activeVolume"},{name:"model",rawName:"v-model",value:(_vm.volume),expression:"volume"}],staticClass:"video__range-volume",attrs:{"type":"range"},domProps:{"value":(_vm.volume)},on:{"__r":function($event){_vm.volume=$event.target.value}}})]),_vm._v(" "),_c('button',{staticClass:"video__btn-fullscreen",on:{"click":_vm.fullscreen}},[_c('i',{class:_vm.fullstate ? 'fas fa-compress': 'fas fa-expand'})])])])}
 __vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-2fec10dc"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
@@ -94,7 +127,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-2fec10dc", __vue__options__)
   } else {
-    hotAPI.reload("data-v-2fec10dc", __vue__options__)
+    hotAPI.rerender("data-v-2fec10dc", __vue__options__)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],4:[function(require,module,exports){
@@ -123,8 +156,8 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".global-
 module.exports = {
     data: function(){
         return {
-            stateOf: false, //true должно быть
-            ref: 'https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4'
+            stateOf: false, //true должно быть https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4
+            ref: 'https://2ch.hk/a/src/6873846/15936790507220.webm'
         }
     },
     components: {
@@ -151,7 +184,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-25ce3ebc", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-25ce3ebc", __vue__options__)
+    hotAPI.reload("data-v-25ce3ebc", __vue__options__)
   }
 })()}
 },{"./components/videoplayer.vue":3,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],5:[function(require,module,exports){
