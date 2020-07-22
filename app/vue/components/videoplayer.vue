@@ -5,22 +5,35 @@
             <source :src="reflink" type="video/webm">
             <p>Your browser doesn't support HTML5 video. Here is a <a :href="reflink">link to the video</a> instead.</p>
         </video>
-        <div class="video__controll-panel">
-            <button @click="pause()" class="video__btn-pause">
-                <i :class="paused ? 'fas fa-play': 'fas fa-pause'"></i>
-            </button>
+        <div class="video__controll">
             <div @mousedown.prevent="move" @mousemove="mousemove" class="video__load">
-                <div :style="{width: loadWidth + '%'}" class="inner__load"></div>
+                <div :style="{left: coordinate.left + 'px'}" class="video__load__pop">
+                    {{coordinate.value.toFixed(2)}}
+                </div>
+                <div :style="{width: loadWidth + '%'}" class="inner__load">
+                    <div @mousemove="mousemove" class="circle"></div>
+                </div>
             </div>
-            <div class="volumeBox">
-                <button @click="activeVolume = !activeVolume" class="video__btn-volume">
-                    <i class="fas fa-volume-up"></i>
+            <div class="video__controll-panel">
+                <div class="volumeBox">
+                    <button class="video__btn-volume">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <input type="range" class="video__range-volume" v-model="volume">
+                </div>
+                <button @click="skip(false)" class="video__btn-arrow">
+                    <i class="fas fa-backward"></i>
                 </button>
-                <input type="range" class="video__range-volume" v-show="activeVolume" v-model="volume">
+                <button @click="pause()" class="video__btn-pause">
+                    <i :class="paused ? 'far fa-play-circle': 'far fa-pause-circle'"></i>
+                </button>
+                <button @click="skip(true)" class="video__btn-arrow">
+                    <i class="fas fa-forward"></i>
+                </button>
+                <button class="video__btn-fullscreen" @click="fullscreen">
+                    <i :class="fullstate ? 'fas fa-compress': 'fas fa-expand'"></i>
+                </button>
             </div>
-            <button class="video__btn-fullscreen" @click="fullscreen">
-                <i :class="fullstate ? 'fas fa-compress': 'fas fa-expand'"></i>
-            </button>
         </div>
     </div>
 </template>
@@ -36,14 +49,17 @@
                 fullstate: false,
                 loadWidth: 0,
                 stateMouse: false,
-                activeVolume: false,
-                volume: 50
+                volume: 20,
+                coordinate:{
+                    left: 0,
+                    value: 0
+                }
             }
         },
         props:['link'],
         methods:{
             pause: function(){
-                var video = document.querySelector('video');
+                var video =         document.querySelector('video');
                 if(this.paused) video.play()
                 else video.pause()
                 this.paused = !this.paused
@@ -56,15 +72,30 @@
                 this.stateMouse =   true
                 var video =         document.querySelector('video');
                 var loadband =      document.querySelector('.video__load');
-                this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+                this.loadWidth =    (event.pageX - loadband.getBoundingClientRect().left) * 100 / loadband.offsetWidth
                 video.currentTime = this.loadWidth * video.duration / 100
             },
             mousemove: function(event){
+                var video =             document.querySelector('video');
+                var loadband =          document.querySelector('.video__load');
+                let position =          event.pageX - loadband.getBoundingClientRect().left;
+                this.coordinate.left =  position - 25;
+                let curTime = (position * 100 / loadband.offsetWidth) * video.duration / 100;
+                this.coordinate.value = curTime;
                 if(this.stateMouse){
-                    var video =         document.querySelector('video');
-                    var loadband =      document.querySelector('.video__load');
-                    this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
-                    video.currentTime = this.loadWidth * video.duration / 100
+                    this.loadWidth =    position * 100 / loadband.offsetWidth
+                    video.currentTime = curTime;
+                }
+            },
+            skip: function(bool){
+                var video = document.querySelector('video');
+                if(bool){
+                    video.currentTime = video.currentTime + 2.5
+                    this.timeUpdate()
+                }
+                else{
+                    video.currentTime = video.currentTime - 2.5
+                    this.timeUpdate()
                 }
             },
             fullscreen: function(){
@@ -97,13 +128,11 @@
 </script>
 
 <style scoped>
-
     .videoplayer{
         position: relative;
-        border: 1px solid black;
         background: #000;
     }
-    .video__controll-panel{
+    .video__controll{
         position: absolute;
         z-index: 2;
         bottom: 0;
@@ -111,14 +140,55 @@
         right: 0;
         display: flex;
         height: 15%;
+        flex-direction: column;
+    }
+    .video__controll-panel{
+        height: 100%;
+        position: relative;
+        text-align: center;
     }
     .video__load{
+        position: relative;
         width: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        height: 15%;
+        background: rgba(0, 0, 0, 0.3);
     }
+    .video__load:hover .video__load__pop{
+        display: block;
+    }
+    .video__load__pop{
+        display: none;
+        position: absolute;
+        font-size: 10px;
+        width: 50px;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        bottom: 10px;
+        padding-top: 8px;
+        text-align: center;
+    }
+
     .inner__load{
-        background: #fff;
+        background: rgba(17, 205, 252);
         height: 100%;
+        position: relative;
+    }
+
+    .inner__load::after{
+
+    }
+
+    .circle{
+        position: absolute;
+        right: -5px;
+        top: -4px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        z-index: 100;
+        background: #fff;
     }
 
     /* Кнопки иконки */
@@ -127,19 +197,29 @@
     button:active, 
     button:focus {
         outline: none;
+        padding: 0;
     }
 
     .video__btn-pause{
-        background: rgba(0, 0, 0, 0.8);
-        border: none;
-        color: #ffffff;
-        height: 100%;
+        width: 10%;
     }
+
+    .video__btn-arrow{
+        width: 5%;
+    }
+
     .video__btn-fullscreen{
-        background: rgba(0, 0, 0, 0.8);
-        border: none;
-        color: #ffffff;
-        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 10%;
+    }
+
+    .volumeBox{
+        width: 180px;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     i{
@@ -148,24 +228,48 @@
         transition: all ease 1s;
     }
 
-    .volumeBox{
-        display: inline-block;
-        position: relative;
-    }
-
-    .video__btn-volume{
-        background: rgba(0, 0, 0, 0.8);
-        border: none;
-        color: #ffffff;
-        height: 100%;
-    }
 
     .video__range-volume{
-        position: absolute;
+        /* position: absolute;
         width: 150%;
         top: 0;
-        right: -30%;
-        transform: rotateZ(-90deg) translateX(40px);
+        right: -30%; */
+        /* transform: rotateZ(-90deg) translateX(40px); */
+    }
+
+    input[type='range'] {
+        -webkit-appearance: none;
+        overflow: hidden;
+        width: 120px;
+        border-radius: 10px;
+    }
+    
+    input[type='range']::-webkit-slider-runnable-track {
+        height: 8px;
+        -webkit-appearance: none;
+        color: #13bba4;
+    }
+    
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 0;
+        height: 0;
+        cursor: grabbing;
+        background: #434343;
+        box-shadow: -80px 0 0 80px #43e5f7;
+    }
+    
+    input[type="range"]::-moz-range-progress {
+        background-color: #43e5f7; 
+    }
+    input[type="range"]::-moz-range-track {  
+        background-color: #fff;
+    }
+    input[type="range"]::-ms-fill-lower {
+        background-color: #43e5f7; 
+    }
+    input[type="range"]::-ms-fill-upper {  
+        background-color: #fff;
     }
 
     /* Блок с фуллскрин стилями */
@@ -185,7 +289,7 @@
         width: 100%;
     }
 
-    .videoplayer.active .video__controll-panel{
+    .videoplayer.active .video__controll{
         height: 8%;
     }
 

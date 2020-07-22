@@ -13,8 +13,21 @@ var $ = window.$ = window.JQuery = require('jquery');
 require('./app/app');
 
 },{"./app/app":1,"jquery":5}],3:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".videoplayer[data-v-2fec10dc]{\n    position: relative;\n    border: 1px solid black;\n    background: #000;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    position: absolute;\n    z-index: 2;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    display: flex;\n    height: 15%;\n}\n.video__load[data-v-2fec10dc]{\n    width: 100%;\n    background: rgba(0, 0, 0, 0.8);\n}\n.inner__load[data-v-2fec10dc]{\n    background: #fff;\n    height: 100%;\n}\n\n/* Кнопки иконки */\n\nbutton[data-v-2fec10dc], \nbutton[data-v-2fec10dc]:active, \nbutton[data-v-2fec10dc]:focus {\n    outline: none;\n}\n\n.video__btn-pause[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n.video__btn-fullscreen[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n\ni[data-v-2fec10dc]{\n    font-size: 15px;\n    padding: 0 10px;\n    transition: all ease 1s;\n}\n\n.volumeBox[data-v-2fec10dc]{\n    display: inline-block;\n    position: relative;\n}\n\n.video__btn-volume[data-v-2fec10dc]{\n    background: rgba(0, 0, 0, 0.8);\n    border: none;\n    color: #ffffff;\n    height: 100%;\n}\n\n.video__range-volume[data-v-2fec10dc]{\n    position: absolute;\n    width: 150%;\n    top: 0;\n    right: -30%;\n    transform: rotateZ(-90deg) translateX(40px);\n}\n\n/* Блок с фуллскрин стилями */\n\n.videoplayer.active[data-v-2fec10dc]{\n    position: fixed;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n}\n\n.videoplayer.active .videoComponent[data-v-2fec10dc]{\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n}\n\n.videoplayer.active .video__controll-panel[data-v-2fec10dc]{\n    height: 8%;\n}")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".videoplayer[data-v-2fec10dc]{\n    position: relative;\n    background: #000;\n}\n.video__controll[data-v-2fec10dc]{\n    position: absolute;\n    z-index: 2;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    display: flex;\n    height: 15%;\n    flex-direction: column;\n}\n.video__controll-panel[data-v-2fec10dc]{\n    height: 100%;\n    position: relative;\n    text-align: center;\n}\n.video__load[data-v-2fec10dc]{\n    position: relative;\n    width: 100%;\n    height: 15%;\n    background: rgba(0, 0, 0, 0.3);\n}\n.video__load:hover .video__load__pop[data-v-2fec10dc]{\n    display: block;\n}\n.video__load__pop[data-v-2fec10dc]{\n    display: none;\n    position: absolute;\n    font-size: 10px;\n    width: 50px;\n    height: 20px;\n    background: rgba(0, 0, 0, 0.6);\n    color: #fff;\n    bottom: 10px;\n    padding-top: 8px;\n    text-align: center;\n}\n\n.inner__load[data-v-2fec10dc]{\n    background: rgba(17, 205, 252);\n    height: 100%;\n    position: relative;\n}\n\n.inner__load[data-v-2fec10dc]::after{\n\n}\n\n.circle[data-v-2fec10dc]{\n    position: absolute;\n    right: -5px;\n    top: -4px;\n    width: 15px;\n    height: 15px;\n    border-radius: 50%;\n    border: none;\n    z-index: 100;\n    background: #fff;\n}\n\n/* Кнопки иконки */\n\nbutton[data-v-2fec10dc], \nbutton[data-v-2fec10dc]:active, \nbutton[data-v-2fec10dc]:focus {\n    outline: none;\n    padding: 0;\n}\n\n.video__btn-pause[data-v-2fec10dc]{\n    width: 10%;\n}\n\n.video__btn-arrow[data-v-2fec10dc]{\n    width: 5%;\n}\n\n.video__btn-fullscreen[data-v-2fec10dc]{\n    position: absolute;\n    right: 0;\n    top: 0;\n    width: 10%;\n}\n\n.volumeBox[data-v-2fec10dc]{\n    width: 180px;\n    position: absolute;\n    left: 0;\n    top: 0;\n}\n\ni[data-v-2fec10dc]{\n    font-size: 15px;\n    padding: 0 10px;\n    transition: all ease 1s;\n}\n\n\n.video__range-volume[data-v-2fec10dc]{\n    /* position: absolute;\n    width: 150%;\n    top: 0;\n    right: -30%; */\n    /* transform: rotateZ(-90deg) translateX(40px); */\n}\n\ninput[type='range'][data-v-2fec10dc] {\n    -webkit-appearance: none;\n    overflow: hidden;\n    width: 120px;\n    border-radius: 10px;\n}\n\ninput[type='range'][data-v-2fec10dc]::-webkit-slider-runnable-track {\n    height: 8px;\n    -webkit-appearance: none;\n    color: #13bba4;\n}\n\ninput[type='range'][data-v-2fec10dc]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    width: 0;\n    height: 0;\n    cursor: grabbing;\n    background: #434343;\n    box-shadow: -80px 0 0 80px #43e5f7;\n}\n\ninput[type=\"range\"][data-v-2fec10dc]::-moz-range-progress {\n    background-color: #43e5f7; \n}\ninput[type=\"range\"][data-v-2fec10dc]::-moz-range-track {  \n    background-color: #fff;\n}\ninput[type=\"range\"][data-v-2fec10dc]::-ms-fill-lower {\n    background-color: #43e5f7; \n}\ninput[type=\"range\"][data-v-2fec10dc]::-ms-fill-upper {  \n    background-color: #fff;\n}\n\n/* Блок с фуллскрин стилями */\n\n.videoplayer.active[data-v-2fec10dc]{\n    position: fixed;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n}\n\n.videoplayer.active .videoComponent[data-v-2fec10dc]{\n    top: 0;\n    left: 0;\n    height: 100%;\n    width: 100%;\n}\n\n.videoplayer.active .video__controll[data-v-2fec10dc]{\n    height: 8%;\n}")
 ;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -53,14 +66,17 @@ module.exports = {
             fullstate: false,
             loadWidth: 0,
             stateMouse: false,
-            activeVolume: false,
-            volume: 50
+            volume: 20,
+            coordinate:{
+                left: 0,
+                value: 0
+            }
         }
     },
     props:['link'],
     methods:{
         pause: function(){
-            var video = document.querySelector('video');
+            var video =         document.querySelector('video');
             if(this.paused) video.play()
             else video.pause()
             this.paused = !this.paused
@@ -73,15 +89,30 @@ module.exports = {
             this.stateMouse =   true
             var video =         document.querySelector('video');
             var loadband =      document.querySelector('.video__load');
-            this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
+            this.loadWidth =    (event.pageX - loadband.getBoundingClientRect().left) * 100 / loadband.offsetWidth
             video.currentTime = this.loadWidth * video.duration / 100
         },
         mousemove: function(event){
+            var video =             document.querySelector('video');
+            var loadband =          document.querySelector('.video__load');
+            let position =          event.pageX - loadband.getBoundingClientRect().left;
+            this.coordinate.left =  position - 25;
+            let curTime = (position * 100 / loadband.offsetWidth) * video.duration / 100;
+            this.coordinate.value = curTime;
             if(this.stateMouse){
-                var video =         document.querySelector('video');
-                var loadband =      document.querySelector('.video__load');
-                this.loadWidth =    event.offsetX * 100 / loadband.offsetWidth
-                video.currentTime = this.loadWidth * video.duration / 100
+                this.loadWidth =    position * 100 / loadband.offsetWidth
+                video.currentTime = curTime;
+            }
+        },
+        skip: function(bool){
+            var video = document.querySelector('video');
+            if(bool){
+                video.currentTime = video.currentTime + 2.5
+                this.timeUpdate()
+            }
+            else{
+                video.currentTime = video.currentTime - 2.5
+                this.timeUpdate()
             }
         },
         fullscreen: function(){
@@ -116,8 +147,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer",class:{'active': _vm.fullstate}},[_c('video',{staticClass:"videoComponent",attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('button',{staticClass:"video__btn-pause",on:{"click":function($event){return _vm.pause()}}},[_c('i',{class:_vm.paused ? 'fas fa-play': 'fas fa-pause'})]),_vm._v(" "),_c('div',{staticClass:"video__load",on:{"mousedown":function($event){$event.preventDefault();return _vm.move($event)},"mousemove":_vm.mousemove}},[_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})})]),_vm._v(" "),_c('div',{staticClass:"volumeBox"},[_c('button',{staticClass:"video__btn-volume",on:{"click":function($event){_vm.activeVolume = !_vm.activeVolume}}},[_c('i',{staticClass:"fas fa-volume-up"})]),_vm._v(" "),_c('input',{directives:[{name:"show",rawName:"v-show",value:(_vm.activeVolume),expression:"activeVolume"},{name:"model",rawName:"v-model",value:(_vm.volume),expression:"volume"}],staticClass:"video__range-volume",attrs:{"type":"range"},domProps:{"value":(_vm.volume)},on:{"__r":function($event){_vm.volume=$event.target.value}}})]),_vm._v(" "),_c('button',{staticClass:"video__btn-fullscreen",on:{"click":_vm.fullscreen}},[_c('i',{class:_vm.fullstate ? 'fas fa-compress': 'fas fa-expand'})])])])}
-__vue__options__.staticRenderFns = []
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"videoplayer",class:{'active': _vm.fullstate}},[_c('video',{staticClass:"videoComponent",attrs:{"height":"360px","width":"640px"},on:{"timeupdate":_vm.timeUpdate}},[_c('source',{attrs:{"src":_vm.reflink,"type":"video/mp4"}}),_vm._v(" "),_c('source',{attrs:{"src":_vm.reflink,"type":"video/webm"}}),_vm._v(" "),_c('p',[_vm._v("Your browser doesn't support HTML5 video. Here is a "),_c('a',{attrs:{"href":_vm.reflink}},[_vm._v("link to the video")]),_vm._v(" instead.")])]),_vm._v(" "),_c('div',{staticClass:"video__controll"},[_c('div',{staticClass:"video__load",on:{"mousedown":function($event){$event.preventDefault();return _vm.move($event)},"mousemove":_vm.mousemove}},[_c('div',{staticClass:"video__load__pop",style:({left: _vm.coordinate.left + 'px'})},[_vm._v("\n                "+_vm._s(_vm.coordinate.value.toFixed(2))+"\n            ")]),_vm._v(" "),_c('div',{staticClass:"inner__load",style:({width: _vm.loadWidth + '%'})},[_c('div',{staticClass:"circle",on:{"mousemove":_vm.mousemove}})])]),_vm._v(" "),_c('div',{staticClass:"video__controll-panel"},[_c('div',{staticClass:"volumeBox"},[_vm._m(0),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.volume),expression:"volume"}],staticClass:"video__range-volume",attrs:{"type":"range"},domProps:{"value":(_vm.volume)},on:{"__r":function($event){_vm.volume=$event.target.value}}})]),_vm._v(" "),_c('button',{staticClass:"video__btn-arrow",on:{"click":function($event){return _vm.skip(false)}}},[_c('i',{staticClass:"fas fa-backward"})]),_vm._v(" "),_c('button',{staticClass:"video__btn-pause",on:{"click":function($event){return _vm.pause()}}},[_c('i',{class:_vm.paused ? 'far fa-play-circle': 'far fa-pause-circle'})]),_vm._v(" "),_c('button',{staticClass:"video__btn-arrow",on:{"click":function($event){return _vm.skip(true)}}},[_c('i',{staticClass:"fas fa-forward"})]),_vm._v(" "),_c('button',{staticClass:"video__btn-fullscreen",on:{"click":_vm.fullscreen}},[_c('i',{class:_vm.fullstate ? 'fas fa-compress': 'fas fa-expand'})])])])])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{staticClass:"video__btn-volume"},[_c('i',{staticClass:"fas fa-volume-up"})])}]
 __vue__options__._scopeId = "data-v-2fec10dc"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -127,7 +158,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-2fec10dc", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-2fec10dc", __vue__options__)
+    hotAPI.reload("data-v-2fec10dc", __vue__options__)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],4:[function(require,module,exports){
@@ -157,7 +188,7 @@ module.exports = {
     data: function(){
         return {
             stateOf: false, //true должно быть https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4
-            ref: 'https://2ch.hk/a/src/6873846/15936790507220.webm'
+            ref: 'https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4'
         }
     },
     components: {
@@ -184,7 +215,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-25ce3ebc", __vue__options__)
   } else {
-    hotAPI.reload("data-v-25ce3ebc", __vue__options__)
+    hotAPI.rerender("data-v-25ce3ebc", __vue__options__)
   }
 })()}
 },{"./components/videoplayer.vue":3,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":12}],5:[function(require,module,exports){

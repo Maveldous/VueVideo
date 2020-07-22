@@ -1,0 +1,14 @@
+@import '../../node_modules/normalize.css/normalize';
+
+.video__btn-pause , .video__btn-fullscreen , .volumeBox, .video__btn-volume, .video__btn-arrow{
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    height: 100%;
+}
+
+.video__btn-pause .far{
+    font-size: 25px;
+    font-weight: 100;
+}

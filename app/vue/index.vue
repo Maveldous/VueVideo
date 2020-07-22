@@ -22,7 +22,7 @@
         data: function(){
             return {
                 stateOf: false, //true должно быть https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4
-                ref: 'https://2ch.hk/a/src/6873846/15936790507220.webm'
+                ref: 'https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4'
             }
         },
         components: {
