@@ -12,7 +12,7 @@
                 >
             <button @click="openLink()" class="ref__container-btn">OPEN</button>
         </div> -->
-        <videoplayer :link="ref"></videoplayer>
+        <videoplayer :content="someContent" :link="ref"></videoplayer>
     </div>
 </template>
 
@@ -22,7 +22,19 @@
         data: function(){
             return {
                 stateOf: false, //true должно быть https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4
-                ref: 'https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4'
+                ref: 'https://pic.pikbest.com/00/97/20/888piC6X888piCvKd.mp4',
+                someContent: [
+                    {
+                        first:5,
+                        second: 9,
+                        name: 'Title2'
+                    },
+                    {
+                        first:2,
+                        second: 4,
+                        name: 'Title1'
+                    }
+                ]
             }
         },
         components: {

@@ -1,6 +1,10 @@
 <template>
     <div class="videoplayer" :class="{'active': fullstate}" >
-        <video class="videoComponent" height="360px" width="640px" @timeupdate="timeUpdate">
+        <div v-show="stateAlert" class="videoAlert">
+            <i class="fas fa-exclamation-circle"></i>
+            <p> {{stateAlert}}</p>
+        </div>
+        <video class="videoComponent" @timeupdate="timeUpdate">
             <source :src="reflink" type="video/mp4">
             <source :src="reflink" type="video/webm">
             <p>Your browser doesn't support HTML5 video. Here is a <a :href="reflink">link to the video</a> instead.</p>
@@ -45,6 +49,7 @@
         data: function (){
             return {
                 reflink: this.link,
+                timers: this.content,
                 paused: true,
                 fullstate: false,
                 loadWidth: 0,
@@ -53,10 +58,11 @@
                 coordinate:{
                     left: 0,
                     value: 0
-                }
+                },
+                stateAlert: ''
             }
         },
-        props:['link'],
+        props:['link', 'content'],
         methods:{
             pause: function(){
                 var video =         document.querySelector('video');
@@ -65,8 +71,16 @@
                 this.paused = !this.paused
             },
             timeUpdate: function(){
+                let counter = false
                 var video =         document.querySelector('video');
                 this.loadWidth =    video.currentTime * 100 / video.duration
+                this.timers.forEach(time => {
+                    if(time.first < video.currentTime && time.second > video.currentTime) {
+                        this.stateAlert = time.name;
+                        counter = true
+                    }
+                });
+                if(!counter) this.stateAlert = "" 
             },
             move: function(event){
                 this.stateMouse =   true
@@ -111,7 +125,7 @@
         },
         watch:{
             volume(){
-                var video =         document.querySelector('video');
+                var video =    document.querySelector('video');
                 video.volume = this.volume / 100
             }
         },
@@ -123,6 +137,10 @@
                 if (document.fullscreenElement) this.fullstate = true
                 else                            this.fullstate = false
             });
+        },
+        beforeDestroy: function(){
+            window.removeEventListener('mouseup', function(event){},false);
+            document.removeEventListener('fullscreenchange', function(event){},false);
         }
     }
 </script>
@@ -131,7 +149,14 @@
     .videoplayer{
         position: relative;
         background: #000;
+        width: 640px;
+        height: 360px;
     }
+    .videoComponent{
+        width: 640px;
+        height: 360px;
+    }
+
     .video__controll{
         position: absolute;
         z-index: 2;
@@ -139,13 +164,15 @@
         left: 0;
         right: 0;
         display: flex;
-        height: 15%;
+        height: 54px;
         flex-direction: column;
     }
     .video__controll-panel{
         height: 100%;
         position: relative;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .video__load{
         position: relative;
@@ -175,10 +202,6 @@
         position: relative;
     }
 
-    .inner__load::after{
-
-    }
-
     .circle{
         position: absolute;
         right: -5px;
@@ -200,41 +223,21 @@
         padding: 0;
     }
 
-    .video__btn-pause{
-        width: 10%;
-    }
-
-    .video__btn-arrow{
-        width: 5%;
-    }
-
     .video__btn-fullscreen{
         position: absolute;
-        right: 0;
-        top: 0;
-        width: 10%;
+        right: 15px;
     }
 
     .volumeBox{
-        width: 180px;
+        display: inline-block;
         position: absolute;
         left: 0;
-        top: 0;
     }
 
     i{
         font-size: 15px;
         padding: 0 10px;
         transition: all ease 1s;
-    }
-
-
-    .video__range-volume{
-        /* position: absolute;
-        width: 150%;
-        top: 0;
-        right: -30%; */
-        /* transform: rotateZ(-90deg) translateX(40px); */
     }
 
     input[type='range'] {
@@ -280,6 +283,8 @@
         left: 0;
         right: 0;
         bottom: 0;
+        height: 100%;
+        width: 100%;
     }
 
     .videoplayer.active .videoComponent{
@@ -289,8 +294,51 @@
         width: 100%;
     }
 
-    .videoplayer.active .video__controll{
-        height: 8%;
+    .videoplayer.active .circle{
+        display: none;
+    }
+
+    @media (max-width: 900px){
+        .videoplayer{
+            width: 426px;
+            height: 240px;
+        }
+        .videoComponent{
+            width: 426px;
+            height: 240px;
+        }
+        .video__controll{
+            height: 36px;
+        }
+        input[type='range']{
+            width: 80px;
+        }
+        .video__load{
+            height: 50%;
+        }
+        .circle{
+            top: -3px;
+        }
+    }
+
+    @media (max-width: 600px){
+        .videoplayer{
+            width: 320px;
+            height: 180px;
+        }
+        .videoComponent{
+            width: 320px;
+            height: 180px;
+        }
+        input[type='range']{
+            width: 50px;
+        }
+        .video__controll{
+            height: auto;
+        }
+        .video__load{
+            height: 8px;
+        }
     }
 
 </style>
