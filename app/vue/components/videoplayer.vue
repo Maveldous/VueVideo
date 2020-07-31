@@ -2,7 +2,7 @@
     <div class="videoplayer" :class="{'active': fullstate}" >
         <div v-show="stateAlert" class="videoAlert">
             <i class="fas fa-exclamation-circle"></i>
-            <p> {{stateAlert}}</p>
+            <p class="videoAlert__title"> {{stateAlert}}</p>
         </div>
         <video class="videoComponent" @timeupdate="timeUpdate">
             <source :src="reflink" type="video/mp4">
@@ -45,11 +45,14 @@
 
 
 <script>
+ let video = '';
+ let loadband = '';
+
     module.exports = {
         data: function (){
             return {
                 reflink: this.link,
-                timers: this.content,
+                timers: this.notes,
                 paused: true,
                 fullstate: false,
                 loadWidth: 0,
@@ -62,20 +65,19 @@
                 stateAlert: ''
             }
         },
-        props:['link', 'content'],
+        props:['link', 'notes'],
         methods:{
             pause: function(){
-                var video =         document.querySelector('video');
                 if(this.paused) video.play()
                 else video.pause()
                 this.paused = !this.paused
             },
             timeUpdate: function(){
                 let counter = false
-                var video =         document.querySelector('video');
                 this.loadWidth =    video.currentTime * 100 / video.duration
                 this.timers.forEach(time => {
-                    if(time.first < video.currentTime && time.second > video.currentTime) {
+                    if(time.start < video.currentTime &&
+                     time.duration + time.start > video.currentTime) {
                         this.stateAlert = time.name;
                         counter = true
                     }
@@ -84,14 +86,10 @@
             },
             move: function(event){
                 this.stateMouse =   true
-                var video =         document.querySelector('video');
-                var loadband =      document.querySelector('.video__load');
                 this.loadWidth =    (event.pageX - loadband.getBoundingClientRect().left) * 100 / loadband.offsetWidth
                 video.currentTime = this.loadWidth * video.duration / 100
             },
             mousemove: function(event){
-                var video =             document.querySelector('video');
-                var loadband =          document.querySelector('.video__load');
                 let position =          event.pageX - loadband.getBoundingClientRect().left;
                 this.coordinate.left =  position - 25;
                 let curTime = (position * 100 / loadband.offsetWidth) * video.duration / 100;
@@ -102,7 +100,6 @@
                 }
             },
             skip: function(bool){
-                var video = document.querySelector('video');
                 if(bool){
                     video.currentTime = video.currentTime + 2.5
                     this.timeUpdate()
@@ -125,7 +122,6 @@
         },
         watch:{
             volume(){
-                var video =    document.querySelector('video');
                 video.volume = this.volume / 100
             }
         },
@@ -137,6 +133,10 @@
                 if (document.fullscreenElement) this.fullstate = true
                 else                            this.fullstate = false
             });
+        },
+        mounted: function(){
+            video =    document.querySelector('video');
+            loadband = document.querySelector('.video__load');
         },
         beforeDestroy: function(){
             window.removeEventListener('mouseup', function(event){},false);
@@ -152,6 +152,11 @@
         width: 640px;
         height: 360px;
     }
+    .videoplayer:hover .video__controll{
+        transform: translateX(0px);
+        z-index: 1;
+        opacity: 1;
+    }
     .videoComponent{
         width: 640px;
         height: 360px;
@@ -166,6 +171,10 @@
         display: flex;
         height: 54px;
         flex-direction: column;
+        transition: 0.5s ease all;
+        transform: translateY(30px);
+        z-index: -10;
+        opacity: 0;
     }
     .video__controll-panel{
         height: 100%;
@@ -212,6 +221,28 @@
         border: none;
         z-index: 100;
         background: #fff;
+    }
+
+    .videoAlert{
+        position: absolute;
+        color: white;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        padding-top: 10px;
+        top:20px;
+        right:30px;
+        z-index: 10;
+    }
+    .fas.fa-exclamation-circle {
+        font-size: 20px;
+        font-weight: 900;
+        padding: 0;
+    }
+
+    .videoAlert__title{
+        text-align: center;
+        margin-top: 5px;
     }
 
     /* Кнопки иконки */

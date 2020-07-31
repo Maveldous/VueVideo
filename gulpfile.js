@@ -5,6 +5,7 @@ let gulp = require('gulp'),
     rename = require('gulp-rename'),
     browserify = require('browserify'),
     vueify = require('vueify'),
+    envify = require('envify/custom'),
     source = require('vinyl-source-stream');
 
 
@@ -19,6 +20,10 @@ gulp.task('scss', function(){
 gulp.task('script', function(){
     browserify('app/js/index.js')
         .transform(vueify)
+        .transform(
+            { global: true },
+            envify({ NODE_ENV: 'production' })
+        )
         .bundle()
         .pipe(source('scripts.all.js'))
         .pipe(gulp.dest('dest/js'))
