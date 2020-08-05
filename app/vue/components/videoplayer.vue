@@ -29,7 +29,7 @@
                     <i class="fas fa-backward"></i>
                 </button>
                 <button @click="pause()" class="video__btn-pause">
-                    <i :class="paused ? 'far fa-play-circle': 'far fa-pause-circle'"></i>
+                    <i :class="paused ? 'fas fa-play-circle': 'fas fa-pause-circle'"></i>
                 </button>
                 <button @click="skip(true)" class="video__btn-arrow">
                     <i class="fas fa-forward"></i>
@@ -257,6 +257,10 @@
     .video__btn-fullscreen{
         position: absolute;
         right: 15px;
+    }
+
+    .video__btn-pause i{
+        font-size: 25px;
     }
 
     .volumeBox{

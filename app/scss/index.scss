@@ -1,4 +1,5 @@
 @import '../../node_modules/normalize.css/normalize';
+@import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
 
 .video__btn-pause , .video__btn-fullscreen , .volumeBox, .video__btn-volume, .video__btn-arrow{
@@ -6,9 +7,4 @@
     background: transparent;
     border: none;
     color: #ffffff;
-}
-
-.video__btn-pause .far{
-    font-size: 25px;
-    font-weight: 100;
 }
